@@ -16,6 +16,8 @@ public class BaseInitData {
     public ApplicationRunner baseInitDataApplicationRunner() {
 
         return args -> {
+            if (postService.count() > 0) return;
+
             Post post1 = postService.write("제목1", "내용1");
             System.out.println(post1.getId() + "번 글이 생성되었습니다.");
 
