@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,14 +14,13 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post write(String title, String content) {
-        Post post = new Post(
-                null,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                title,
-                content,
-                false
-        );
+        Post post = Post
+                .builder()
+                .createAt(LocalDateTime.now())
+                .modifyAt(LocalDateTime.now())
+                .title(title)
+                .content(content)
+                .build();
 
         postRepository.save(post);
 
@@ -29,5 +29,9 @@ public class PostService {
 
     public Long count() {
         return postRepository.count();
+    }
+
+    public Optional<Post> findById(long id) {
+        return postRepository.findById(id);
     }
 }
