@@ -2,14 +2,11 @@ package com.ll.jap.global.initData;
 
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.service.PostService;
-import com.ll.jap.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,16 +29,9 @@ public class BaseInitData {
     @Bean
     @Order(2)
     public ApplicationRunner baseInitData2ApplicationRunner() {
-        return new ApplicationRunner() {
-
-            @Transactional
-            @Override
-            public void run(ApplicationArguments args) throws Exception {
-                Ut.thread.sleep(1000);
-
-                Post post1 = postService.findById(1).get();
-                postService.modify(post1, "수정 제목1", "수정 내용1";
-            }
+        return args -> {
+            Post post5 = postService.write("제목4", "내용4");
+            postService.delete(post5);
         };
     }
 }
