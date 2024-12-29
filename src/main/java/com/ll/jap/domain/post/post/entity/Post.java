@@ -20,12 +20,15 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Setter(AccessLevel.PRIVATE)
     private Long id;
 
     @CreatedDate
+    @Setter(AccessLevel.PRIVATE)
     private LocalDateTime createAt;
 
     @LastModifiedDate
+    @Setter(AccessLevel.PRIVATE)
     private LocalDateTime modifyAt;
 
     @Column(length = 100)
