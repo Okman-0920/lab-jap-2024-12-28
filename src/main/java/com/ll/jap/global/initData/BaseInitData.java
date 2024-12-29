@@ -5,10 +5,12 @@ import com.ll.jap.domain.post.comment.service.PostCommentService;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -39,12 +41,22 @@ public class BaseInitData {
     @Order(2)
     public ApplicationRunner baseInitData2ApplicationRunner(PostCommentService postCommentService) {
 
-        return args -> {
-            PostComment postComment3 = postCommentService.findById(3).get();
-            // SELECT * FROM POST_COMMENT WHERE id = 3
+        return new ApplicationRunner() {
+            @Transactional
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+                PostComment postComment3 = postCommentService.findById(3).get();
 
-            Post postOfComment3 = postComment3.getPost();
-            // SELECT * FROM POST WHERE ID = 2
+                Post postOfComment3 = postComment3.getPost();
+                System.out.println("postOfComment3.id = " + postOfComment3.getId());
+                // 쿼리x
+
+                System.out.println("postOfComment3.title = " + postOfComment3.getTitle());
+                // 쿼리 발생
+
+                System.out.println("postOfComment3.content = " + postOfComment3.getContent());
+                // 쿼리x
+            }
         };
     }
 }
