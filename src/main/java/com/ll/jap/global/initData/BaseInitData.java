@@ -5,7 +5,6 @@ import com.ll.jap.domain.post.comment.service.PostCommentService;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,31 +31,27 @@ public class BaseInitData {
             PostComment postComment1 = postCommentService.write(post1, "글1의 댓글1");
             PostComment postComment2 = postCommentService.write(post1, "글1의 댓글2");
             PostComment postComment3 = postCommentService.write(post2, "글2의 댓글1");
-
-            Post postOfComment3 = postComment3.getPost();
         };
     }
 
     @Bean
     @Order(2)
     public ApplicationRunner baseInitData2ApplicationRunner(PostCommentService postCommentService) {
+        return args -> this.work();
+    }
 
-        return new ApplicationRunner() {
-            @Transactional
-            @Override
-            public void run(ApplicationArguments args) throws Exception {
-                PostComment postComment3 = postCommentService.findById(3).get();
+    @Transactional
+    public void work () {
+        PostComment postComment3 = postCommentService.findById(3).get();
 
-                Post postOfComment3 = postComment3.getPost();
-                System.out.println("postOfComment3.id = " + postOfComment3.getId());
-                // 쿼리x
+        Post postOfComment3 = postComment3.getPost();
+        System.out.println("postOfComment3.id = " + postOfComment3.getId());
+        // 쿼리x
 
-                System.out.println("postOfComment3.title = " + postOfComment3.getTitle());
-                // 쿼리 발생
+        System.out.println("postOfComment3.title = " + postOfComment3.getTitle());
+        // 쿼리 발생
 
-                System.out.println("postOfComment3.content = " + postOfComment3.getContent());
-                // 쿼리x
-            }
-        };
+        System.out.println("postOfComment3.content = " + postOfComment3.getContent());
+        // 쿼리x
     }
 }
