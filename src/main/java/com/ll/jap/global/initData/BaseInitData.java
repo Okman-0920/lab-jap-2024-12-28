@@ -1,5 +1,6 @@
 package com.ll.jap.global.initData;
 
+import com.ll.jap.domain.post.comment.entitiy.PostComment;
 import com.ll.jap.domain.post.comment.service.PostCommentService;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.service.PostService;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,16 +41,32 @@ public class BaseInitData {
         Post post2 = postService.write("title2", "content2");
         Post post3 = postService.write("title3", "content3");
 
-        post1.addComment("댓글1");
-        post1.addComment("댓글2");
-        post2.addComment("댓글3");
+        post1.setTitle("title1-1");
+
+        post1.addComment("comment1-1");
+        post1.addComment("comment1-2");
+        post2.addComment("comment2-1");
     }
 
     @Transactional
     public void work2() {
+        Post post = postService.findById(1).get();
+        System.out.println("1번글 로드 완료");
+
+        List<PostComment> postComments = post.getComments();
+        System.out.println("1번글의 댓글 로드 완료");
+
+        PostComment postComment1 = postComments.get(0);
+        System.out.println("1번글의 첫번째 댓글 로드 완료");
+
+        PostComment postComment2 = postComments.get(1);
+        System.out.println("2번글의 두번째 댓글 로드 완료");
     }
 
     @Transactional
     public void work3 () {
+        Post post1 = postService.findById(1).get();
+
+        post1.addComment("comment1-3");
     }
 }

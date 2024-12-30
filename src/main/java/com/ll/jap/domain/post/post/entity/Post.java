@@ -23,15 +23,15 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
     private Long id;
 
     @CreatedDate
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
     private LocalDateTime createAt;
 
     @LastModifiedDate
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
     private LocalDateTime modifyAt;
 
     @Column(length = 100)
@@ -42,14 +42,16 @@ public class Post {
 
     private boolean blind;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Builder.Default // 암기: @Builder 있으면 new 무시되니 붙여야 함
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    // mappedBy = "@ManyToOne과 연결된 변수명"
+    // 자식 클래스를 같이 저장하고 싶으면 cascade를 사용하세요
     public List<PostComment> comments = new ArrayList<>();
 
     public void addComment(String content) {
         PostComment postComment = PostComment
                 .builder()
-                .post(this)
+                .post(this) // 지금 나(Post)의댓글이다
                 .content(content)
                 .build();
 
