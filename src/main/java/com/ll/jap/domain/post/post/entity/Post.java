@@ -19,11 +19,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Setter(AccessLevel.PRIVATE) // setter 못쓰게
+    @EqualsAndHashCode.Include
     private Long id;
 
     @CreatedDate
