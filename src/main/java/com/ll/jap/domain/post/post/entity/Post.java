@@ -8,8 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,7 +41,8 @@ public class Post extends BaseTime {
 
     @Builder.Default
     @OneToMany(mappedBy = "post", cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
-    public List<PostTag> tags = new ArrayList<>();
+    public Set<PostTag> tags = new HashSet<>();
+    // 암기 : Set<> a = new HashSet<>(); --> 자체 중복제거
 
     public void addComment(Member author, String content) {
         PostComment postComment = PostComment
@@ -53,13 +55,15 @@ public class Post extends BaseTime {
         comments.add(postComment);
     }
 
-    public void addTag(String content) {
-        Optional<PostTag> opDldPostTag = tags
-                .stream()
-                .filter(tag -> tag.getContent().equals(content))
-                .findFirst();
 
-        if (opDldPostTag.isPresent()) return;
+    public void addTag(String content) {
+//    (강사님 선호 방법)
+//        Optional<PostTag> opDldPostTag = tags
+//                .stream()
+//                .filter(tag -> tag.getContent().equals(content))
+//                .findFirst();
+//
+//        if (opDldPostTag.isPresent()) return;
 
         PostTag postTag = PostTag
                 .builder()
