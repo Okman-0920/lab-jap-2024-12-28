@@ -20,12 +20,16 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+// 암기: equals(), hashCode() 메서드를 생성하는 메서드
+// 암기: 동일 객체를 비교할 때 특정 조건만 비교할 수 있도록 허용하는 어노테이션
 @EntityListeners(AuditingEntityListener.class)
+// 암기: 엔티티가 생성 or 수정되면, createDate 필드가 자동으로 생성
+
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
-    @EqualsAndHashCode.Include
+    @Setter(AccessLevel.PRIVATE) // 암기: setter 못쓰게
+    @EqualsAndHashCode.Include // 암기: 동일하게 만들 조건에 작성
     private Long id;
 
     @CreatedDate
