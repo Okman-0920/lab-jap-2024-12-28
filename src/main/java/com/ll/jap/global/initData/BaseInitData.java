@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -50,23 +50,20 @@ public class BaseInitData {
 
     @Transactional
     public void work2() {
-        Post post = postService.findById(1).get();
-        System.out.println("1번글 로드 완료");
+        Post post1 = postService.findById(1).get();
+        Optional<PostComment> opPostComment1 = post1.getComments()
+                .stream()
+                .filter(postComment -> postComment.getId() == 1)
+                .findFirst();
 
-        List<PostComment> postComments = post.getComments();
-        System.out.println("1번글의 댓글 로드 완료");
+        if (opPostComment1.isEmpty()) return;
 
-        PostComment postComment1 = postComments.get(0);
-        System.out.println("1번글의 첫번째 댓글 로드 완료");
+        PostComment postComment = opPostComment1.get();
 
-        PostComment postComment2 = postComments.get(1);
-        System.out.println("2번글의 두번째 댓글 로드 완료");
+        post1.removeComment(postComment);
     }
 
     @Transactional
     public void work3 () {
-        Post post1 = postService.findById(1).get();
-
-        post1.addComment("comment1-3");
     }
 }
