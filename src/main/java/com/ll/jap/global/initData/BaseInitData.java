@@ -1,6 +1,6 @@
 package com.ll.jap.global.initData;
 
-import com.ll.jap.domain.member.member.Member;
+import com.ll.jap.domain.member.entity.Member;
 import com.ll.jap.domain.member.service.MemberService;
 import com.ll.jap.domain.post.comment.service.PostCommentService;
 import com.ll.jap.domain.post.post.entity.Post;
@@ -50,7 +50,6 @@ public class BaseInitData {
         Member memberUser1 = memberService.findByUsername("user1").get();
         Member memberUser2 = memberService.findByUsername("user2").get();
         Member memberUser3 = memberService.findByUsername("user3").get();
-
 
         Post post1 = postService.write(memberUser1, "title1", "content1");
         Post post2 = postService.write(memberUser1, "title2", "content2");

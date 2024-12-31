@@ -1,7 +1,8 @@
 package com.ll.jap.domain.post.post.service;
 
+import com.ll.jap.domain.member.entity.Member;
+import com.ll.jap.domain.member.service.MemberService;
 import com.ll.jap.domain.post.post.entity.Post;
-import com.ll.jap.domain.post.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,16 @@ public class PostServiceTest {
     private PostService postService;
 
     @Autowired
-    private PostRepository postRepository;
+    private MemberService memberService;
 
     @Test
     @DisplayName("글 2개 생성")
     @Transactional
     void T1() {
-//        postService.write("글1", "내용1");
-//        postService.write("글2", "내용2");
+        Member user1 = memberService.findByUsername("user1").get();
+
+        postService.write(user1,"글1", "내용1");
+        postService.write(user1,"글2", "내용2");
     }
 
     @Test
@@ -190,5 +193,12 @@ public class PostServiceTest {
         assertEquals(1, postPage.getTotalPages());
         assertEquals(3, postPage.getNumberOfElements());
         assertEquals(pageNumber, postPage.getNumber());
+    }
+
+    @Test
+    @DisplayName("findByAuthorNickname")
+    void t14() {
+        List<Post> posts = postService.findByAuthorNickname("유저1");
+        assertEquals(2, posts.size());
     }
 }

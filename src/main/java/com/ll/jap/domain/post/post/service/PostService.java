@@ -1,6 +1,6 @@
 package com.ll.jap.domain.post.post.service;
 
-import com.ll.jap.domain.member.member.Member;
+import com.ll.jap.domain.member.entity.Member;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,5 +86,9 @@ public class PostService {
 
     public Page<Post> findByTitleLike(String title, Pageable pageable) {
         return postRepository.findByTitleLike(title, pageable);
+    }
+
+    public List<Post> findByAuthorNickname(String authorNickname) {
+        return postRepository.authorNickname(authorNickname);
     }
 }

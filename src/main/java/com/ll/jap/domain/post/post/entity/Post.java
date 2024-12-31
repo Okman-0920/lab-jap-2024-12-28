@@ -1,18 +1,13 @@
 package com.ll.jap.domain.post.post.entity;
 
-import com.ll.jap.domain.member.member.Member;
-import com.ll.jap.domain.post.comment.entitiy.PostComment;
+import com.ll.jap.domain.member.entity.Member;
+import com.ll.jap.domain.post.comment.entity.PostComment;
+import com.ll.jap.global.jpa.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
@@ -20,27 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-// 암기: equals(), hashCode() 메서드를 생성하는 메서드
-// 암기: 동일 객체를 비교할 때 특정 조건만 비교할 수 있도록 허용하는 어노테이션
-@EntityListeners(AuditingEntityListener.class)
-// 암기: 엔티티가 생성 or 수정되면, createDate 필드가 자동으로 생성
-
-public class Post {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Setter(AccessLevel.PRIVATE) // 암기: setter 못쓰게
-    @EqualsAndHashCode.Include // 암기: 동일하게 만들 조건에 작성
-    private Long id;
-
-    @CreatedDate
-    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
-    private LocalDateTime createAt;
-
-    @LastModifiedDate
-    @Setter(AccessLevel.PRIVATE) // setter 못쓰게
-    private LocalDateTime modifyAt;
-
+public class Post extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     // 엔티티관의 관계를 설정
     private Member author;
