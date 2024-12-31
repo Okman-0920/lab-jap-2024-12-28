@@ -6,6 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,5 +123,72 @@ public class PostServiceTest {
         Post post = posts.get(0);
         assertEquals(3, post.getId());
         assertEquals("title3", post.getTitle());
+    }
+
+    @Test
+    @DisplayName("findAll(Pageable pageable)")
+        // SELECT * FROM post WHERE ORDER BY id DESC LIMIT 2;
+    void t11() {
+        int itemsPerPage = 2; // 한 페이지에 보여줄 아이템 수
+        int pageNumber = 2; // 현재 페이지 == 2
+        pageNumber--; // 1을 빼는 이유는 jpa는 페이지 번호를 0부터 시작하기 때문
+        Pageable pageable =
+                PageRequest.of(
+                        pageNumber,
+                        itemsPerPage,
+                        Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Post> postPage = postService.findAll(pageable);
+        List<Post> posts = postPage.getContent();
+        assertEquals(1, posts.size()); // 글이 총 3개이고, 현재 페이지는 2이므로 1개만 보여야 함
+        Post post = posts.get(0);
+        assertEquals(1, post.getId());
+        assertEquals("title1", post.getTitle());
+        assertEquals(3, postPage.getTotalElements()); // 전체 글 수
+        assertEquals(2, postPage.getTotalPages()); // 전체 페이지 수
+        assertEquals(1, postPage.getNumberOfElements()); // 현재 페이지에 노출된 글 수
+        assertEquals(pageNumber, postPage.getNumber()); // 현재 페이지 번호
+    }
+
+    @Test
+    @DisplayName("findByTitleLike(Pageable pageable)")
+        // SELECT * FROM post WHERE title LIKE 'title%' ORDER BY id DESC LIMIT 2, 2;
+    void t12() {
+        int itemsPerPage = 2;
+        int pageNumber = 2;
+        pageNumber--;
+
+        Pageable pageable = PageRequest.of(pageNumber, itemsPerPage, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> postPage = postService.findByTitleLike("title%", pageable);
+        List<Post> posts = postPage.getContent();
+        assertEquals(1, posts.size()); // 확인하는 코드
+        Post post = posts.get(0); // 올바르게 가져왔는지에 대한 테스트1
+        assertEquals(1, post.getId());
+        // 내림차순 정렬하고, 2페이지에 있기 때문에 Id가 1임
+        assertEquals("title1", post.getTitle());
+        assertEquals(3, postPage.getTotalElements()); // 목록수
+        assertEquals(2, postPage.getTotalPages()); // 총 페이지 수
+        assertEquals(1, postPage.getNumberOfElements()); // 페이지에 있는 게시글 수
+        assertEquals(pageNumber, postPage.getNumber()); // 페이지 번호
+    }
+
+    @Test
+    @DisplayName("findByTitleLike(Pageable pageable)")
+        // SELECT * FROM post WHERE title LIKE 'title%' ORDER BY id DESC LIMIT 0, 10;
+    void t13() {
+        int itemsPerPage = 10;
+        int pageNumber = 1;
+        pageNumber--;
+        Pageable pageable = PageRequest.of(pageNumber, itemsPerPage, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> postPage = postService.findByTitleLike("title%", pageable);
+        List<Post> posts = postPage.getContent();
+        assertEquals(3, posts.size());
+        Post post = posts.get(0);
+        assertEquals(3, post.getId());
+        assertEquals("title3", post.getTitle());
+        assertEquals(3, postPage.getTotalElements());
+        assertEquals(1, postPage.getTotalPages());
+        assertEquals(3, postPage.getNumberOfElements());
+        assertEquals(pageNumber, postPage.getNumber());
     }
 }

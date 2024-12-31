@@ -3,6 +3,8 @@ package com.ll.jap.domain.post.post.service;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,5 +74,13 @@ public class PostService {
 
     public List<Post> findTop2ByOrderByIdDesc() {
         return postRepository.findTop2ByOrderByIdDesc();
+    }
+
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> findByTitleLike(String title, Pageable pageable) {
+        return postRepository.findByTitleLike(title, pageable);
     }
 }
