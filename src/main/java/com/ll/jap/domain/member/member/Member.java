@@ -34,7 +34,7 @@ public class Member {
     private LocalDateTime modifyAt;
 
     @Column(unique = true, length = 30)
-    private String username;
+    private String userId;
 
     @Column(length = 100)
     private String password;
