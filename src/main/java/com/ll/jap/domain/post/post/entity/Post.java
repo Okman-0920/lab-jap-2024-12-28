@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -53,9 +54,16 @@ public class Post extends BaseTime {
     }
 
     public void addTag(String content) {
+        Optional<PostTag> opDldPostTag = tags
+                .stream()
+                .filter(tag -> tag.getContent().equals(content))
+                .findFirst();
+
+        if (opDldPostTag.isPresent()) return;
+
         PostTag postTag = PostTag
                 .builder()
-                .post(this) // 지금 나(Post)의 태그이다
+                .post(this)
                 .content(content)
                 .build();
 

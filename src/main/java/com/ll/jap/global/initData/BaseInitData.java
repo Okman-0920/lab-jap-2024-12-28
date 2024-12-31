@@ -62,6 +62,7 @@ public class BaseInitData {
         post1.addTag("IT");
         post1.addTag("Spring");
         post1.addTag("JAP");
+        post1.addTag("JAP");
 
         post2.addTag("소설");
         post2.addTag("문학");
