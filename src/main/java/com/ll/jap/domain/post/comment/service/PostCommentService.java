@@ -1,5 +1,6 @@
 package com.ll.jap.domain.post.comment.service;
 
+import com.ll.jap.domain.member.member.Member;
 import com.ll.jap.domain.post.comment.entitiy.PostComment;
 import com.ll.jap.domain.post.comment.repository.PostCommentRepository;
 import com.ll.jap.domain.post.post.entity.Post;
@@ -13,11 +14,11 @@ import java.util.Optional;
 public class PostCommentService {
     private final PostCommentRepository postCommentRepository;
 
-
-    public PostComment write(Post post, String content) {
+    public PostComment write(Member author, Post post, String content) {
         PostComment postComment = PostComment
                 .builder()
                 .post(post)
+                .author(author)
                 .content(content)
                 .build();
 

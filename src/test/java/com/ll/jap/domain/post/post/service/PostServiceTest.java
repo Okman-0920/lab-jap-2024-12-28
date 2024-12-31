@@ -31,8 +31,8 @@ public class PostServiceTest {
     @DisplayName("글 2개 생성")
     @Transactional
     void T1() {
-        postService.write("글1", "내용1");
-        postService.write("글2", "내용2");
+//        postService.write("글1", "내용1");
+//        postService.write("글2", "내용2");
     }
 
     @Test

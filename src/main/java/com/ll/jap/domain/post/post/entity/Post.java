@@ -1,5 +1,6 @@
 package com.ll.jap.domain.post.post.entity;
 
+import com.ll.jap.domain.member.member.Member;
 import com.ll.jap.domain.post.comment.entitiy.PostComment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,6 +41,10 @@ public class Post {
     @Setter(AccessLevel.PRIVATE) // setter 못쓰게
     private LocalDateTime modifyAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    // 엔티티관의 관계를 설정
+    private Member author;
+
     @Column(length = 100)
     private String title;
 
@@ -56,10 +61,11 @@ public class Post {
     // PERSIST는 트랜잭션과 관련없다
     public List<PostComment> comments = new ArrayList<>();
 
-    public void addComment(String content) {
+    public void addComment(Member author, String content) {
         PostComment postComment = PostComment
                 .builder()
                 .post(this) // 지금 나(Post)의댓글이다
+                .author(author)
                 .content(content)
                 .build();
 

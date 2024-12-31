@@ -1,5 +1,6 @@
 package com.ll.jap.domain.post.comment.entitiy;
 
+import com.ll.jap.domain.member.member.Member;
 import com.ll.jap.domain.post.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,9 @@ public class PostComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member author;
 
     @Column(columnDefinition = "TEXT")
     private String content;

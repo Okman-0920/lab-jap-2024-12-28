@@ -1,5 +1,6 @@
 package com.ll.jap.domain.post.post.service;
 
+import com.ll.jap.domain.member.member.Member;
 import com.ll.jap.domain.post.post.entity.Post;
 import com.ll.jap.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,12 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    public Post write(String title, String content) {
+    // 질문: Member author
+    // Member 인스턴스 변수의 값을 가져오는것인지, 클래스인지?
+    public Post write(Member author, String title, String content) {
         Post post = Post
                 .builder()
+                .author(author)
                 .title(title)
                 .content(content)
                 .build();
