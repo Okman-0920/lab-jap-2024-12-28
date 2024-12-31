@@ -58,5 +58,13 @@ public class BaseInitData {
         post1.addComment(memberUser3,"comment1");
         post1.addComment(memberUser3,"comment2");
         post2.addComment(memberUser1,"comment3");
+
+        post1.addTag("IT");
+        post1.addTag("Spring");
+        post1.addTag("JAP");
+
+        post2.addTag("소설");
+        post2.addTag("문학");
+        post2.addTag("소설가");
     }
 }

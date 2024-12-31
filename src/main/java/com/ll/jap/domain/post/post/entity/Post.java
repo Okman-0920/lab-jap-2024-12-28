@@ -2,6 +2,7 @@ package com.ll.jap.domain.post.post.entity;
 
 import com.ll.jap.domain.member.entity.Member;
 import com.ll.jap.domain.post.comment.entity.PostComment;
+import com.ll.jap.domain.post.tag.entity.PostTag;
 import com.ll.jap.global.jpa.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,10 @@ public class Post extends BaseTime {
     // PERSIST는 트랜잭션과 관련없다
     public List<PostComment> comments = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "post", cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
+    public List<PostTag> tags = new ArrayList<>();
+
     public void addComment(Member author, String content) {
         PostComment postComment = PostComment
                 .builder()
@@ -45,6 +50,16 @@ public class Post extends BaseTime {
                 .build();
 
         comments.add(postComment);
+    }
+
+    public void addTag(String content) {
+        PostTag postTag = PostTag
+                .builder()
+                .post(this) // 지금 나(Post)의 태그이다
+                .content(content)
+                .build();
+
+        tags.add(postTag);
     }
 
     public void removeComment(PostComment comment) {
